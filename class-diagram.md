@@ -131,6 +131,25 @@ classDiagram
         +thanhToan()
     }
 
+    class HotelManagementApp {
+        +chay()
+    }
+
+    class MenuNhanVien {
+        -HotelManagementApp ungDung
+        +chay()
+    }
+
+    class MenuQuanLy {
+        -HotelManagementApp ungDung
+        +chay()
+    }
+
+    class MenuKhachHang {
+        -HotelManagementApp ungDung
+        +chay()
+    }
+
     Nguoi <|-- KhachHang
     Nguoi <|-- NhanVien
     NhanVien <|-- LeTan
@@ -152,6 +171,9 @@ classDiagram
     KhachHang "1" <-- "0..*" HoaDon : maKhach
     TaiKhoan "0..*" --> "1" Nguoi : maNguoiDung
 
+    MenuNhanVien --> HotelManagementApp : goi nghiep vu
+    MenuQuanLy --> HotelManagementApp : goi nghiep vu
+    MenuKhachHang --> HotelManagementApp : goi nghiep vu
 ```
 
 Các quan hệ giữa `DatPhong`, `HoaDon`, `KhachHang` và `Phong` là liên kết logic

@@ -36,13 +36,13 @@ public class HotelManagementApp {
     private static final String FILE_HOA_DON = DUONG_DAN_DATA + "hoadon.txt";
     private static final String FILE_DICH_VU = DUONG_DAN_DATA + "dichvu.txt";
 
-    private DanhSachPhong dsPhong = new DanhSachPhong();
-    private DanhSachKhachHang dsKhach = new DanhSachKhachHang();
-    private DanhSachNhanVien dsNhanVien = new DanhSachNhanVien();
-    private DanhSachTaiKhoan dsTaiKhoan = new DanhSachTaiKhoan();
-    private DanhSachDatPhong dsDatPhong = new DanhSachDatPhong();
-    private DanhSachHoaDon dsHoaDon = new DanhSachHoaDon();
-    private DanhSachDichVu dsDichVu = new DanhSachDichVu();
+    DanhSachPhong dsPhong = new DanhSachPhong();
+    DanhSachKhachHang dsKhach = new DanhSachKhachHang();
+    DanhSachNhanVien dsNhanVien = new DanhSachNhanVien();
+    DanhSachTaiKhoan dsTaiKhoan = new DanhSachTaiKhoan();
+    DanhSachDatPhong dsDatPhong = new DanhSachDatPhong();
+    DanhSachHoaDon dsHoaDon = new DanhSachHoaDon();
+    DanhSachDichVu dsDichVu = new DanhSachDichVu();
 
     public void chay() {
         docDuLieu();
@@ -84,7 +84,7 @@ public class HotelManagementApp {
         }
     }
 
-    private void ghiDuLieu() {
+    void ghiDuLieu() {
         dsPhong.ghiFile(FILE_PHONG);
         dsKhach.ghiFile(FILE_KHACH);
         dsNhanVien.ghiFile(FILE_NHAN_VIEN);
@@ -145,123 +145,26 @@ public class HotelManagementApp {
 
     private void hienThiMenuVaiTro(TaiKhoan taiKhoan) {
         if (taiKhoan.getVaiTro().equals("LETAN")) {
-            menuNhanVien();
+            new MenuNhanVien(this).chay();
         } else if (taiKhoan.getVaiTro().equals("QUANLY")) {
-            menuQuanLy();
+            new MenuQuanLy(this).chay();
         } else {
             System.out.println("Tai khoan khong con duoc ho tro.");
         }
         TaiKhoan.dangXuat();
     }
 
-    private void menuNhanVien() {
-        boolean tiepTuc = true;
-        while (tiepTuc) {
-            System.out.println("\n===== MENU NHAN VIEN =====");
-            System.out.println("1. Xem phong trong");
-            System.out.println("2. Dat phong");
-            System.out.println("3. Thong tin khach hang");
-            System.out.println("4. Xem phong da dat");
-            System.out.println("5. Thanh toan va tra phong");
-            System.out.println("0. Dang xuat");
-            int chon = Utils.nhapSo("Chon: ");
-            if (chon == 1) xemPhongTrong();
-            else if (chon == 2) datPhong();
-            else if (chon == 3) menuThongTinKhachHang();
-            else if (chon == 4) xemTatCaDatPhong();
-            else if (chon == 5) thanhToanVaTraPhong();
-            else if (chon == 0) tiepTuc = false;
-            else System.out.println("Lua chon khong hop le.");
-        }
+    void hienThiTaiKhoanVaDoanhThu() {
+        dsTaiKhoan.hienThiDanhSach();
     }
 
-    private void menuQuanLy() {
-        boolean tiepTuc = true;
-        while (tiepTuc) {
-            System.out.println("\n===== MENU QUAN LY =====");
-            System.out.println("1. Quan ly phong");
-            System.out.println("2. Quan ly nhan vien");
-            System.out.println("3. Quan ly khach hang");
-            System.out.println("4. Quan ly tai khoan");
-            System.out.println("5. Xem hoa don va doanh thu");
-            System.out.println("6. Xem luong nhan vien");
-            System.out.println("7. Dang ky tai khoan nhan vien");
-            System.out.println("8. Nhap them n phong");
-            System.out.println("9. Tim kiem phong theo tu khoa");
-            System.out.println("10. Thong ke theo nhieu tieu chi");
-            System.out.println("0. Dang xuat");
-            int chon = Utils.nhapSo("Chon: ");
-            if (chon == 1) quanLyPhong();
-            else if (chon == 2) quanLyNhanVien();
-            else if (chon == 3) menuThongTinKhachHang();
-            else if (chon == 4) dsTaiKhoan.hienThiDanhSach();
-            else if (chon == 5) {
-                dsHoaDon.hienThiDanhSach();
-                System.out.println("Doanh thu: " + Utils.dinhDangTien(dsHoaDon.tinhDoanhThu()));
-            } else if (chon == 6) hienThiLuong();
-            else if (chon == 7) dangKyTaiKhoanNhanVien();
-            else if (chon == 8) nhapNhieuPhong();
-            else if (chon == 9) timKiemPhong();
-            else if (chon == 10) thongKe();
-            else if (chon == 0) tiepTuc = false;
-            else System.out.println("Lua chon khong hop le.");
-        }
+    void hienThiHoaDonVaDoanhThu() {
+        dsHoaDon.hienThiDanhSach();
+        System.out.println("Doanh thu: "
+                + Utils.dinhDangTien(dsHoaDon.tinhDoanhThu()));
     }
 
-    private void xemPhongTrong() {
-        for (int i = 0; i < dsPhong.getSoLuong(); i++) {
-            Phong phong = dsPhong.get(i);
-            if (phong.getTrangThai().equalsIgnoreCase("Trong")) {
-                phong.hienThiThongTin();
-                System.out.println("--------------------");
-            }
-        }
-    }
-
-    private void datPhong() {
-        String soDienThoai = nhapSoDienThoai();
-        KhachHang khach = timKhachTheoSoDienThoai(soDienThoai);
-        if (khach == null) {
-            System.out.println("So dien thoai chua duoc dang ky cho khach hang.");
-            return;
-        }
-        xemPhongTrong();
-        String maPhong = Utils.nhapChuoi("Nhap ma phong: ");
-        Phong phong = dsPhong.tim(maPhong);
-        if (phong == null || !phong.getTrangThai().equalsIgnoreCase("Trong")) {
-            System.out.println("Phong khong ton tai hoac khong trong.");
-            return;
-        }
-        int soNguoi = Utils.nhapSo("So luong nguoi: ");
-        if (soNguoi <= 0) {
-            System.out.println("So luong nguoi phai lon hon 0.");
-            return;
-        }
-        if (soNguoi > phong.getSoNguoiToiDa()) {
-            System.out.println("Phong chi phu hop toi da "
-                    + phong.getSoNguoiToiDa() + " nguoi.");
-            return;
-        }
-        String nhan = Utils.nhapChuoi("Ngay nhan (yyyyMMdd): ");
-        String tra = Utils.nhapChuoi("Ngay tra (yyyyMMdd): ");
-        int soDem = Utils.nhapSo("So dem: ");
-        if (!hopLeKhoangNgay(nhan, tra) || !Utils.laSoDuong(soDem)) {
-            System.out.println("Khoang ngay hoac so dem khong hop le.");
-            return;
-        }
-        if (biTrungPhong(maPhong, nhan, tra)) {
-            System.out.println("Phong da bi dat trong khoang ngay nay.");
-            return;
-        }
-        String maDat = "DP" + (dsDatPhong.getSoLuong() + 1);
-        dsDatPhong.them(new DatPhong(maDat, khach.getMa(), maPhong, nhan, tra,
-                soDem, "Cho xac nhan"));
-        phong.setTrangThai("Da dat");
-        ghiDuLieu();
-        System.out.println("Dat phong thanh cong: " + maDat);
-    }
-
-    private boolean hopLeKhoangNgay(String nhan, String tra) {
+    boolean hopLeKhoangNgay(String nhan, String tra) {
         return nhan.matches("\\d{8}") && tra.matches("\\d{8}")
                 && ngayToSo(nhan) < ngayToSo(tra);
     }
@@ -274,7 +177,7 @@ public class HotelManagementApp {
         }
     }
 
-    private boolean biTrungPhong(String maPhong, String nhan, String tra) {
+    boolean biTrungPhong(String maPhong, String nhan, String tra) {
         for (int i = 0; i < dsDatPhong.getSoLuong(); i++) {
             DatPhong d = dsDatPhong.get(i);
             boolean cungPhong = d.getMaPhong().equalsIgnoreCase(maPhong);
@@ -289,29 +192,7 @@ public class HotelManagementApp {
         return false;
     }
 
-    private void xemTatCaDatPhong() {
-        boolean coDatPhong = false;
-        for (int i = 0; i < dsDatPhong.getSoLuong(); i++) {
-            DatPhong datPhong = dsDatPhong.get(i);
-            datPhong.hienThiThongTin();
-            KhachHang khach = dsKhach.tim(datPhong.getMaKhach());
-            if (khach != null) {
-                System.out.println("So dien thoai khach: " + khach.getSoDienThoai());
-            }
-            Phong phong = dsPhong.tim(datPhong.getMaPhong());
-            if (phong != null) {
-                System.out.println("Ten phong: " + phong.getTenPhong());
-                System.out.println("Loai phong: " + phong.getClass().getSimpleName());
-            }
-            System.out.println("--------------------");
-            coDatPhong = true;
-        }
-        if (!coDatPhong) {
-            System.out.println("Chua co phong nao duoc dat.");
-        }
-    }
-
-    private void thanhToanVaTraPhong() {
+    void thanhToanVaTraPhong() {
         String soDienThoai = nhapSoDienThoai();
         KhachHang khach = timKhachTheoSoDienThoai(soDienThoai);
         if (khach == null) {
@@ -427,7 +308,7 @@ public class HotelManagementApp {
         hoaDon.tinhTien();
     }
 
-    private DatPhong timDatPhongDangSuDung(String maKhach) {
+    DatPhong timDatPhongDangSuDung(String maKhach) {
         for (int i = 0; i < dsDatPhong.getSoLuong(); i++) {
             DatPhong datPhong = dsDatPhong.get(i);
             if (datPhong.getMaKhach().equalsIgnoreCase(maKhach)
@@ -461,7 +342,7 @@ public class HotelManagementApp {
         return null;
     }
 
-    private KhachHang timKhachTheoSoDienThoai(String soDienThoai) {
+    KhachHang timKhachTheoSoDienThoai(String soDienThoai) {
         for (int i = 0; i < dsKhach.getSoLuong(); i++) {
             KhachHang khach = dsKhach.get(i);
             if (khach.getSoDienThoai().equals(soDienThoai)) {
@@ -471,7 +352,7 @@ public class HotelManagementApp {
         return null;
     }
 
-    private KhachHang nhapKhachHang(String ma) {
+    KhachHang nhapKhachHang(String ma) {
         String ten = Utils.nhapChuoi("Ho ten: ");
         if (ten.length() == 0) {
             System.out.println("Ho ten khong duoc de trong.");
@@ -484,87 +365,7 @@ public class HotelManagementApp {
         return new KhachHang(ma, ten, nam, gioiTinh, dienThoai, diaChi, 0, "Thuong");
     }
 
-    private void menuThongTinKhachHang() {
-        boolean tiepTuc = true;
-        while (tiepTuc) {
-            System.out.println("\n===== THONG TIN KHACH HANG =====");
-            System.out.println("1. Xem tat ca");
-            System.out.println("2. Tim theo tu khoa (ma, ten, sdt, gioi tinh, dia chi)");
-            System.out.println("3. Them khach hang");
-            System.out.println("4. Sua khach hang");
-            System.out.println("5. Xoa khach hang");
-            System.out.println("0. Quay lai");
-            int chon = Utils.nhapSo("Chon: ");
-            if (chon == 1) {
-                dsKhach.hienThiDanhSach();
-            } else if (chon == 2) {
-                timKiemKhachHang();
-            } else if (chon == 3) {
-                themKhachHang();
-            } else if (chon == 4) {
-                suaKhachHang();
-            } else if (chon == 5) {
-                xoaKhachHang();
-            } else if (chon == 0) {
-                tiepTuc = false;
-            } else {
-                System.out.println("Lua chon khong hop le.");
-            }
-        }
-    }
-
-    private void themKhachHang() {
-        String ma = "KH" + (dsKhach.getSoLuong() + 1);
-        KhachHang khach = nhapKhachHang(ma);
-        if (khach != null && timKhachTheoSoDienThoai(khach.getSoDienThoai()) == null) {
-            dsKhach.them(khach);
-            ghiDuLieu();
-            System.out.println("Them khach hang thanh cong.");
-        } else if (khach != null) {
-            System.out.println("So dien thoai da duoc dang ky.");
-        }
-    }
-
-    private void suaKhachHang() {
-        KhachHang khach = timKhachTheoSoDienThoai(nhapSoDienThoai());
-        if (khach == null) {
-            System.out.println("Khong tim thay khach hang.");
-            return;
-        }
-        String ten = Utils.nhapChuoi("Ho ten moi: ");
-        int nam = nhapNamSinhKhachHang();
-        String gioiTinh = nhapGioiTinh();
-        String soDienThoaiMoi = nhapSoDienThoai();
-        KhachHang khachTrung = timKhachTheoSoDienThoai(soDienThoaiMoi);
-        if (khachTrung != null && khachTrung != khach) {
-            System.out.println("So dien thoai moi da duoc dang ky.");
-            return;
-        }
-        khach.setHoTen(ten);
-        khach.setNamSinh(nam);
-        khach.setGioiTinh(gioiTinh);
-        khach.setSoDienThoai(soDienThoaiMoi);
-        khach.setDiaChi(Utils.nhapChuoi("Dia chi moi: "));
-        ghiDuLieu();
-        System.out.println("Sua khach hang thanh cong.");
-    }
-
-    private void xoaKhachHang() {
-        KhachHang khach = timKhachTheoSoDienThoai(nhapSoDienThoai());
-        if (khach == null) {
-            System.out.println("Khong tim thay khach hang.");
-            return;
-        }
-        if (timDatPhongDangSuDung(khach.getMa()) != null) {
-            System.out.println("Khong the xoa khach hang dang co dat phong.");
-            return;
-        }
-        dsKhach.xoa(khach.getMa());
-        ghiDuLieu();
-        System.out.println("Xoa khach hang thanh cong.");
-    }
-
-    private String nhapMatKhauMoi() {
+    String nhapMatKhauMoi() {
         while (true) {
             String pass = Utils.nhapChuoi("Mat khau (it nhat 6 ky tu): ");
             if (pass.length() >= 6) {
@@ -574,7 +375,7 @@ public class HotelManagementApp {
         }
     }
 
-    private int nhapNamSinh() {
+    int nhapNamSinh() {
         int namHienTai = Calendar.getInstance().get(Calendar.YEAR);
         while (true) {
             int nam = Utils.nhapSo("Nam sinh: ");
@@ -585,7 +386,7 @@ public class HotelManagementApp {
         }
     }
 
-    private int nhapNamSinhKhachHang() {
+    int nhapNamSinhKhachHang() {
         int namHienTai = Calendar.getInstance().get(Calendar.YEAR);
         while (true) {
             int nam = Utils.nhapSo("Nam sinh: ");
@@ -596,7 +397,7 @@ public class HotelManagementApp {
         }
     }
 
-    private String nhapGioiTinh() {
+    String nhapGioiTinh() {
         while (true) {
             String gioiTinh = Utils.nhapChuoi("Gioi tinh (Nam/Nu/Khac): ");
             if (gioiTinh.equalsIgnoreCase("Nam")
@@ -608,7 +409,7 @@ public class HotelManagementApp {
         }
     }
 
-    private String nhapSoDienThoai() {
+    String nhapSoDienThoai() {
         while (true) {
             String dienThoai = Utils.nhapChuoi("So dien thoai (10 so): ");
             if (dienThoai.matches("0\\d{9}")) {
@@ -618,7 +419,7 @@ public class HotelManagementApp {
         }
     }
 
-    private void quanLyPhong() {
+    void quanLyPhong() {
         dsPhong.hienThiDanhSach();
         System.out.println("1. Them phong  2. Sua phong  3. Xoa phong  0. Quay lai");
         int chon = Utils.nhapSo("Chon: ");
@@ -675,7 +476,7 @@ public class HotelManagementApp {
         ghiDuLieu();
     }
 
-    private void nhapNhieuPhong() {
+    void nhapNhieuPhong() {
         int soLuong = Utils.nhapSo("Nhap so luong phong can them: ");
         if (soLuong <= 0) {
             System.out.println("So luong phai lon hon 0.");
@@ -687,27 +488,7 @@ public class HotelManagementApp {
         }
     }
 
-    private void timKiemKhachHang() {
-        String tuKhoa = Utils.nhapChuoi("Nhap tu khoa can tim: ").toLowerCase();
-        boolean timThay = false;
-        for (int i = 0; i < dsKhach.getSoLuong(); i++) {
-            KhachHang khach = dsKhach.get(i);
-            if (chuaTuKhoa(khach.getMa(), tuKhoa)
-                    || chuaTuKhoa(khach.getHoTen(), tuKhoa)
-                    || chuaTuKhoa(khach.getSoDienThoai(), tuKhoa)
-                    || chuaTuKhoa(khach.getGioiTinh(), tuKhoa)
-                    || chuaTuKhoa(khach.getDiaChi(), tuKhoa)) {
-                khach.hienThiThongTin();
-                System.out.println("--------------------");
-                timThay = true;
-            }
-        }
-        if (!timThay) {
-            System.out.println("Khong tim thay khach hang phu hop.");
-        }
-    }
-
-    private void timKiemPhong() {
+    void timKiemPhong() {
         String tuKhoa = Utils.nhapChuoi("Nhap ma, ten, tang hoac trang thai: ")
                 .toLowerCase();
         boolean timThay = false;
@@ -731,7 +512,7 @@ public class HotelManagementApp {
         return giaTri != null && giaTri.toLowerCase().contains(tuKhoa);
     }
 
-    private void thongKe() {
+    void thongKe() {
         int phongTrong = 0;
         int phongDaDat = 0;
         int phongDon = 0;
@@ -841,7 +622,7 @@ public class HotelManagementApp {
         return false;
     }
 
-    private void quanLyNhanVien() {
+    void quanLyNhanVien() {
         dsNhanVien.hienThiDanhSach();
         System.out.println("1. Them  2. Sua  3. Xoa  0. Quay lai");
         int chon = Utils.nhapSo("Chon: ");
@@ -924,7 +705,7 @@ public class HotelManagementApp {
         return null;
     }
 
-    private void dangKyTaiKhoanNhanVien() {
+    void dangKyTaiKhoanNhanVien() {
         String tenDangNhap = Utils.nhapChuoi("Ten dang nhap: ");
         if (tenDangNhap.length() == 0
                 || dsTaiKhoan.tim(tenDangNhap) != null) {
@@ -954,7 +735,7 @@ public class HotelManagementApp {
         return ma;
     }
 
-    private void hienThiLuong() {
+    void hienThiLuong() {
         for (int i = 0; i < dsNhanVien.getSoLuong(); i++) {
             NhanVien nhanVien = dsNhanVien.get(i);
             System.out.println(nhanVien.getVaiTro() + " - "
