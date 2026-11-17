@@ -6,6 +6,7 @@ public abstract class Phong {
     private int tang;
     private String trangThai;
     private double giaCoBan;
+    private int soNguoiToiDa;
 
     public static int tongSoPhong = 0;
 
@@ -15,6 +16,7 @@ public abstract class Phong {
         tang = 0;
         trangThai = "Trong";
         giaCoBan = 0;
+        soNguoiToiDa = 1;
         tongSoPhong++;
     }
 
@@ -25,6 +27,7 @@ public abstract class Phong {
         this.tang = tang;
         this.trangThai = trangThai;
         this.giaCoBan = giaCoBan;
+        this.soNguoiToiDa = 1;
         tongSoPhong++;
     }
 
@@ -36,6 +39,7 @@ public abstract class Phong {
         System.out.println("Tang: " + tang);
         System.out.println("Trang thai: " + trangThai);
         System.out.println("Gia co ban: " + giaCoBan);
+        System.out.println("So nguoi toi da: " + soNguoiToiDa);
     }
 
     public String getMaPhong() {
@@ -76,5 +80,13 @@ public abstract class Phong {
 
     public void setGiaCoBan(double giaCoBan) {
         this.giaCoBan = giaCoBan;
+    }
+
+    public int getSoNguoiToiDa() {
+        return soNguoiToiDa;
+    }
+
+    public void setSoNguoiToiDa(int soNguoiToiDa) {
+        this.soNguoiToiDa = soNguoiToiDa;
     }
 }

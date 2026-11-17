@@ -1,0 +1,6 @@
+HD1|DP1|KH1|20000621|1440000.0|0.0|0.0|1440000.0|Da thanh toan|Chua nhap chi tiet dich vu
+HD2|DP2|KH1|20000608|1440000.0|30000.0|0.0|1470000.0|Da thanh toan|kk
+HD3|DP3|KH1|20000721|1440000.0|700000.0|0.0|2140000.0|Da thanh toan|Bua sang x 2 = 100,000 VND, Spa x 2 = 600,000 VND
+HD4|DP4|KH1|20000709|1440000.0|50000.0|0.0|1490000.0|Da thanh toan|Bua sang x 1 = 50,000 VND
+HD5|DP5|KH1|20000709|1440000.0|0.0|0.0|1440000.0|Chua thanh toan|Khong su dung dich vu
+HD6|DP6|KH1|20000709|600000.0|0.0|0.0|600000.0|Chua thanh toan|Khong su dung dich vu

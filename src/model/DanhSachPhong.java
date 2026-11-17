@@ -116,16 +116,23 @@ public class DanhSachPhong implements IFileIO {
             int tang = Integer.parseInt(p[3]);
             String trangThai = p[4];
             double gia = Double.parseDouble(p[5]);
+            int soNguoiToiDa = p.length >= 8 ? Integer.parseInt(p[7]) : 1;
+            if (soNguoiToiDa <= 0) {
+                return null;
+            }
+            Phong phong;
             if (loai.equals("DON")) {
-                return new PhongDon(ma, ten, tang, trangThai, gia,
+                phong = new PhongDon(ma, ten, tang, trangThai, gia,
+                        Double.parseDouble(p[6]));
+            } else if (loai.equals("DOI")) {
+                phong = new PhongDoi(ma, ten, tang, trangThai, gia,
+                        Integer.parseInt(p[6]));
+            } else {
+                phong = new PhongVIP(ma, ten, tang, trangThai, gia,
                         Double.parseDouble(p[6]));
             }
-            if (loai.equals("DOI")) {
-                return new PhongDoi(ma, ten, tang, trangThai, gia,
-                        Integer.parseInt(p[6]));
-            }
-            return new PhongVIP(ma, ten, tang, trangThai, gia,
-                    Double.parseDouble(p[6]));
+            phong.setSoNguoiToiDa(soNguoiToiDa);
+            return phong;
         } catch (Exception e) {
             return null;
         }
@@ -140,15 +147,18 @@ public class DanhSachPhong implements IFileIO {
                 if (p instanceof PhongDon) {
                     pw.println("DON|" + p.getMaPhong() + "|" + p.getTenPhong()
                             + "|" + p.getTang() + "|" + p.getTrangThai() + "|"
-                            + p.getGiaCoBan() + "|" + ((PhongDon) p).getPhuThu());
+                            + p.getGiaCoBan() + "|" + ((PhongDon) p).getPhuThu()
+                            + "|" + p.getSoNguoiToiDa());
                 } else if (p instanceof PhongDoi) {
                     pw.println("DOI|" + p.getMaPhong() + "|" + p.getTenPhong()
                             + "|" + p.getTang() + "|" + p.getTrangThai() + "|"
-                            + p.getGiaCoBan() + "|" + ((PhongDoi) p).getSoGiuong());
+                            + p.getGiaCoBan() + "|" + ((PhongDoi) p).getSoGiuong()
+                            + "|" + p.getSoNguoiToiDa());
                 } else if (p instanceof PhongVIP) {
                     pw.println("VIP|" + p.getMaPhong() + "|" + p.getTenPhong()
                             + "|" + p.getTang() + "|" + p.getTrangThai() + "|"
-                            + p.getGiaCoBan() + "|" + ((PhongVIP) p).getPhiDichVu());
+                            + p.getGiaCoBan() + "|" + ((PhongVIP) p).getPhiDichVu()
+                            + "|" + p.getSoNguoiToiDa());
                 }
             }
             pw.close();

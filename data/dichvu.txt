@@ -1,0 +1,3 @@
+AN|DV01|Bua sang|50000.0|suat|Mon an
+GIATLA|DV02|Giat la|100000.0|kg|5
+SPA|DV03|Spa|300000.0|goi|60

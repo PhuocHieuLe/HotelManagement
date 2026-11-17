@@ -95,9 +95,17 @@ public class DanhSachHoaDon implements IFileIO {
                 String[] p = dong.split("\\|");
                 if (p.length >= 9) {
                     try {
-                        them(new HoaDon(p[0], p[1], p[2], p[3],
-                                Double.parseDouble(p[4]), Double.parseDouble(p[5]),
-                                Double.parseDouble(p[6]), p[8]));
+                        HoaDon hoaDon;
+                        if (p.length >= 10) {
+                            hoaDon = new HoaDon(p[0], p[1], p[2], p[3],
+                                    Double.parseDouble(p[4]), Double.parseDouble(p[5]),
+                                    Double.parseDouble(p[6]), p[9], p[8]);
+                        } else {
+                            hoaDon = new HoaDon(p[0], p[1], p[2], p[3],
+                                    Double.parseDouble(p[4]), Double.parseDouble(p[5]),
+                                    Double.parseDouble(p[6]), p[8]);
+                        }
+                        them(hoaDon);
                     } catch (Exception e) {
                         System.out.println("Bo qua dong hoa don khong hop le.");
                     }
@@ -119,7 +127,7 @@ public class DanhSachHoaDon implements IFileIO {
                         + h.getMaKhach() + "|" + h.getNgayLap() + "|"
                         + h.getTienPhong() + "|" + h.getTienDichVu() + "|"
                         + h.getGiamGia() + "|" + h.getTongTien() + "|"
-                        + h.getTrangThai());
+                        + h.getTrangThai() + "|" + h.getChiTietDichVu());
             }
             pw.close();
         } catch (Exception e) {

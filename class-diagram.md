@@ -34,18 +34,6 @@ classDiagram
         +getVaiTro() String
     }
 
-    class KeToan {
-        -double thuong
-        +tinhLuong() double
-        +getVaiTro() String
-    }
-
-    class BuongPhong {
-        -int soPhongPhuTrach
-        +tinhLuong() double
-        +getVaiTro() String
-    }
-
     class QuanLy {
         -double heSoChucVu
         +tinhLuong() double
@@ -59,6 +47,7 @@ classDiagram
         -int tang
         -String trangThai
         -double giaCoBan
+        -int soNguoiToiDa
         +tinhGia(int soDem) double*
     }
 
@@ -104,6 +93,7 @@ classDiagram
         -String ngayTra
         -int soDem
         -String trangThai
+        +hienThiThongTin()
     }
 
     class HoaDon {
@@ -114,6 +104,7 @@ classDiagram
         -double tienDichVu
         -double giamGia
         -double tongTien
+        -String chiTietDichVu
         -String trangThai
         +tinhTien() double
         +thanhToan()
@@ -143,8 +134,6 @@ classDiagram
     Nguoi <|-- KhachHang
     Nguoi <|-- NhanVien
     NhanVien <|-- LeTan
-    NhanVien <|-- KeToan
-    NhanVien <|-- BuongPhong
     NhanVien <|-- QuanLy
 
     Phong <|-- PhongDon
@@ -157,12 +146,12 @@ classDiagram
 
     TaiKhoan ..|> IXacThuc
     HoaDon ..|> IThanhToan
-
     KhachHang "1" <-- "0..*" DatPhong : maKhach
     Phong "1" <-- "0..*" DatPhong : maPhong
     DatPhong "1" <-- "0..*" HoaDon : maDatPhong
     KhachHang "1" <-- "0..*" HoaDon : maKhach
     TaiKhoan "0..*" --> "1" Nguoi : maNguoiDung
+
 ```
 
 Các quan hệ giữa `DatPhong`, `HoaDon`, `KhachHang` và `Phong` là liên kết logic

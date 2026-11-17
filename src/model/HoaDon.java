@@ -11,6 +11,7 @@ public class HoaDon implements IThanhToan {
     private double tienDichVu;
     private double giamGia;
     private double tongTien;
+    private String chiTietDichVu;
     private String trangThai;
 
     public HoaDon() {
@@ -22,6 +23,7 @@ public class HoaDon implements IThanhToan {
         tienDichVu = 0;
         giamGia = 0;
         tongTien = 0;
+        chiTietDichVu = "";
         trangThai = "Chua thanh toan";
     }
 
@@ -35,8 +37,17 @@ public class HoaDon implements IThanhToan {
         this.tienPhong = tienPhong;
         this.tienDichVu = tienDichVu;
         this.giamGia = giamGia;
+        this.chiTietDichVu = "Chua nhap chi tiet dich vu";
         this.trangThai = trangThai;
         tongTien = tinhTien();
+    }
+
+    public HoaDon(String maHoaDon, String maDatPhong, String maKhach,
+                  String ngayLap, double tienPhong, double tienDichVu,
+                  double giamGia, String chiTietDichVu, String trangThai) {
+        this(maHoaDon, maDatPhong, maKhach, ngayLap, tienPhong, tienDichVu,
+                giamGia, trangThai);
+        this.chiTietDichVu = chiTietDichVu;
     }
 
     @Override
@@ -61,7 +72,7 @@ public class HoaDon implements IThanhToan {
         System.out.println("Ngay lap: " + ngayLap);
         System.out.println("Tien phong: " + tienPhong);
         System.out.println("Tien dich vu: " + tienDichVu);
-        System.out.println("Giam gia: " + giamGia);
+        System.out.println("Chi tiet dich vu: " + chiTietDichVu);
         System.out.println("Tong tien: " + tinhTien());
         System.out.println("Trang thai: " + trangThai);
     }
@@ -128,6 +139,14 @@ public class HoaDon implements IThanhToan {
 
     public void setTongTien(double tongTien) {
         this.tongTien = tongTien;
+    }
+
+    public String getChiTietDichVu() {
+        return chiTietDichVu;
+    }
+
+    public void setChiTietDichVu(String chiTietDichVu) {
+        this.chiTietDichVu = chiTietDichVu;
     }
 
     public String getTrangThai() {

@@ -30,7 +30,8 @@ directory là thư mục gốc của dự án để chương trình tìm đượ
 HotelManagement/
 ├── src/
 │   ├── app/
-│   │   ├── Main.java       # Điều phối chương trình và các menu nghiệp vụ
+│   │   ├── Main.java       # Điểm khởi động chương trình
+│   │   ├── HotelManagementApp.java # Điều phối menu và nghiệp vụ
 │   │   └── Utils.java      # Nhập dữ liệu, định dạng tiền, kiểm tra số
 │   ├── interfaces/         # Các interface dùng chung
 │   └── model/              # Lớp nghiệp vụ, lớp thực thể và lớp danh sách
@@ -38,40 +39,50 @@ HotelManagement/
 └── README.md
 ```
 
-`Main` giữ các danh sách dữ liệu và điều hướng menu. Các lớp `DanhSach...` chịu
+`Main` chỉ khởi động `HotelManagementApp`. `HotelManagementApp` giữ các danh sách
+dữ liệu và điều hướng menu. Các lớp `DanhSach...` chịu
 trách nhiệm thêm, xóa, tìm, sửa, hiển thị và đọc/ghi dữ liệu. Các lớp trong
 `model` mô tả đối tượng nghiệp vụ, còn `interfaces` mô tả các hành vi dùng chung.
 
 ## 3. Luồng hoạt động chính
 
-1. `Main.main()` tạo một đối tượng `Main` rồi gọi `chay()`.
+1. `Main.main()` tạo một đối tượng `HotelManagementApp` rồi gọi `chay()`.
 2. `chay()` đọc dữ liệu từ bảy tệp trong thư mục `data`.
 3. Nếu danh sách phòng, nhân viên hoặc tài khoản đang rỗng, chương trình tạo dữ
    liệu mẫu để có thể đăng nhập và dùng thử ngay.
-4. Người dùng chọn:
-   - **Đăng nhập** để vào menu theo vai trò.
-   - **Đăng ký tài khoản khách** để tạo `KhachHang` và `TaiKhoan` mới.
-   - **Thoát** để ghi toàn bộ danh sách xuống các tệp text.
+4. Người dùng chọn **Đăng nhập** hoặc **Thoát**. Quản lý có thể đăng ký
+   tài khoản nhân viên từ menu quản lý.
 5. Sau khi đăng nhập, `TaiKhoan.vaiTro` quyết định menu được hiển thị:
 
 | Vai trò | Chức năng chính |
 |---|---|
-| `KHACH` | Xem phòng trống, đặt phòng, xem hóa đơn và thông tin cá nhân |
-| `LETAN` | Đặt phòng giúp khách, xem khách, cập nhật trạng thái đặt phòng |
-| `KETOAN` | Lập hóa đơn, thanh toán, xem hóa đơn và doanh thu |
-| `BUONGPHONG` | Xem phòng, cập nhật trạng thái phòng |
-| `QUANLY` | Quản lý phòng, nhân viên, khách hàng, tài khoản, hóa đơn và lương |
+| `LETAN` | Xem phòng trống, đặt phòng bằng số điện thoại khách, quản lý khách hàng, xem đặt phòng, thanh toán và trả phòng |
+| `QUANLY` | Các chức năng nhân viên, quản lý phòng, nhân viên, khách hàng, tài khoản, hóa đơn, doanh thu và đăng ký tài khoản nhân viên |
 
 ### Quy trình đặt phòng và thanh toán
 
-- Khách hoặc lễ tân chọn một phòng có trạng thái `Trong`.
-- Chương trình kiểm tra mã khách, định dạng ngày `yyyyMMdd`, số đêm dương và
-  phòng có bị trùng lịch hay không.
+- Nhân viên nhập số điện thoại khách đã đăng ký rồi chọn một phòng có trạng thái `Trong`.
+- Khi thêm khách hàng, chương trình yêu cầu khách đủ 18 tuổi.
+- Khi đặt phòng, chương trình hỏi số người và kiểm tra sức chứa tối đa của phòng,
+  đồng thời kiểm tra định dạng ngày `yyyyMMdd`, số đêm dương và lịch bị trùng.
 - Khi đặt thành công, tạo `DatPhong` và chuyển trạng thái phòng thành `Da dat`.
-- Kế toán lập `HoaDon`. Tiền phòng được tính bởi `Phong.tinhGia(soDem)` của
-  đúng loại phòng; điểm tích lũy của khách được dùng để tính giảm giá.
+- Khi thanh toán/trả phòng, chương trình lập hoặc cập nhật `HoaDon`. Nhân viên
+  chọn một hoặc nhiều dịch vụ có sẵn và số lượng thực tế trước khi thanh toán.
+  Nếu khách có nhiều phòng, tất cả phòng đang đặt của khách được gom vào một lần
+  thanh toán và trả phòng.
+- Hóa đơn hiển thị tiền phòng, tiền dịch vụ, chi tiết dịch vụ và tổng tiền;
+  chương trình hỏi xác nhận trước khi chuyển trạng thái sang đã thanh toán.
+  Tiền phòng được tính bởi `Phong.tinhGia(soDem)` của đúng loại phòng.
+
+Dịch vụ mẫu có giá cố định trong `data\dichvu.txt`: bữa sáng 50.000
+VND/suất, giặt là 100.000 VND/kg và spa 300.000 VND/gói.
+Sức chứa mẫu trong `data\phong.txt`: phòng đơn 2 người, phòng đôi 4 người và
+phòng VIP 6 người.
 - Khi thanh toán, `HoaDon.thanhToan()` đổi trạng thái thành `Da thanh toan`.
   Doanh thu chỉ cộng các hóa đơn đã thanh toán.
+- Quản lý có thể nhập liên tiếp `n` phòng mới, tìm kiếm phòng/khách hàng theo
+  nhiều trường với từ khóa gần đúng, và xem thống kê theo trạng thái, loại phòng,
+  giới tính khách hàng, trạng thái đặt phòng và trạng thái hóa đơn.
 
 ## 4. Các lớp và quan hệ chính
 
@@ -81,8 +92,7 @@ trách nhiệm thêm, xóa, tìm, sửa, hiển thị và đọc/ghi dữ liệu
   tính, số điện thoại và địa chỉ.
 - `KhachHang` kế thừa `Nguoi`, bổ sung điểm tích lũy và loại khách.
 - `NhanVien` kế thừa `Nguoi`, là lớp trừu tượng có `tinhLuong()`.
-- `LeTan`, `KeToan`, `BuongPhong`, `QuanLy` kế thừa `NhanVien` và tính lương
-  theo công thức riêng.
+- `LeTan` và `QuanLy` kế thừa `NhanVien` và tính lương theo công thức riêng.
 
 ### Lớp phòng
 
@@ -97,7 +107,7 @@ trách nhiệm thêm, xóa, tìm, sửa, hiển thị và đọc/ghi dữ liệu
 - `DichVu` là lớp cơ sở; `DichVuAn`, `DichVuGiatLa`, `DichVuSpa` mở rộng
   thuộc tính đặc thù của từng dịch vụ.
 - `DatPhong` lưu khách, phòng, ngày nhận, ngày trả, số đêm và trạng thái.
-- `HoaDon` lưu tiền phòng, tiền dịch vụ, giảm giá và trạng thái thanh toán.
+- `HoaDon` lưu tiền phòng, tiền dịch vụ, chi tiết dịch vụ và trạng thái thanh toán.
 
 ### Các lớp danh sách
 
@@ -116,10 +126,13 @@ trùng mã/tên đăng nhập và cung cấp các thao tác CRUD cơ bản.
 | Đa hình | Đạt | Danh sách lưu kiểu cha như `Phong[]`, `NhanVien[]`, `ArrayList<DichVu>`; lời gọi `phong.tinhGia()` và `nhanVien.tinhLuong()` chạy theo lớp con thực tế |
 | Lớp mảng các đối tượng | Đạt | `DanhSachPhong`, `DanhSachNhanVien`, `DanhSachDatPhong` dùng mảng đối tượng, tự tăng kích thước bằng `System.arraycopy` |
 | Đọc/ghi file text | Đạt | Các lớp danh sách cài `IFileIO`, dùng `BufferedReader`, `FileReader`, `FileWriter`, `PrintWriter` để đọc/ghi bảy tệp `.txt` |
-| Thuộc tính và phương thức `static` | Đạt | `Main` có các hằng đường dẫn `static final`; `Utils` có các hàm static; `KhachHang.demSoKhach`, `Phong.tongSoPhong`, `TaiKhoan.taiKhoanHienTai` là static |
+| Nhập `n` phần tử | Đạt | Menu quản lý có chức năng nhập liên tiếp `n` phòng mới |
+| Tìm kiếm nhiều khóa, gần đúng | Đạt | Tìm khách theo mã, tên, số điện thoại, giới tính, địa chỉ; tìm phòng theo mã, tên, tầng, trạng thái |
+| Thống kê nhiều khóa | Đạt | Thống kê phòng, loại phòng, giới tính khách hàng, trạng thái đặt phòng và hóa đơn |
+| Thuộc tính và phương thức `static` | Đạt | `HotelManagementApp` có các hằng đường dẫn `static final`; `Utils` có các hàm static; `KhachHang.demSoKhach`, `Phong.tongSoPhong`, `TaiKhoan.taiKhoanHienTai` là static |
 | Lớp và hàm trừu tượng | Đạt | `Nguoi`, `NhanVien`, `Phong` là abstract; các hàm `hienThiThongTin`, `getVaiTro`, `tinhLuong`, `tinhGia` được khai báo abstract và cài đặt ở lớp con |
 | Interface | Đạt | `IFileIO`, `IThanhToan`, `IXacThuc`; các lớp danh sách, `HoaDon` và `TaiKhoan` lần lượt implements các interface này |
-| Sáng tạo | Đạt | Phân quyền theo năm vai trò, kiểm tra trùng lịch đặt phòng, tính giá khác nhau theo loại phòng, tích lũy/giảm giá, mã hóa mật khẩu đơn giản khi lưu và báo cáo doanh thu |
+| Sáng tạo | Đạt | Phân quyền theo hai vai trò nhân viên, kiểm tra khách bằng số điện thoại, kiểm tra trùng lịch đặt phòng, tính giá khác nhau theo loại phòng, chọn nhiều dịch vụ và mã hóa mật khẩu đơn giản khi lưu |
 
 ## 6. Giải thích các điểm OOP có thể được hỏi
 
@@ -161,7 +174,7 @@ Các tệp dùng dấu `|` làm ký tự phân cách, mỗi dòng là một đ�
 tiền tố loại được dùng để khôi phục đúng lớp con khi đọc:
 
 - `phong.txt`: `DON`, `DOI`, `VIP`
-- `nhanvien.txt`: `LETAN`, `KETOAN`, `BUONGPHONG`, `QUANLY`
+- `nhanvien.txt`: `LETAN`, `QUANLY`
 - `dichvu.txt`: `AN`, `GIATLA`, `SPA`
 
 Các tệp `khachhang.txt`, `taikhoan.txt`, `datphong.txt` và `hoadon.txt` lưu
@@ -177,16 +190,13 @@ Khi dữ liệu tài khoản trống, chương trình tạo các tài khoản sa
 |---|---|---|
 | `admin` | `admin123` | `QUANLY` |
 | `letan` | `123456` | `LETAN` |
-| `ketoan` | `123456` | `KETOAN` |
-
-Tài khoản khách được tạo bằng chức năng **Đăng ký tài khoản khách**.
 
 ## 9. Gợi ý trình bày khi bảo vệ
 
 1. Chỉ ra ba cây kế thừa: `Nguoi`, `NhanVien` và `Phong`.
 2. Mở `DanhSachPhong` để giải thích mảng đối tượng và việc tăng kích thước mảng.
 3. Mở `HoaDon` để trình bày interface `IThanhToan`.
-4. Mở `Main.lapHoaDon()` để minh họa đa hình khi gọi `phong.tinhGia()`.
+4. Mở `HotelManagementApp.thanhToanVaTraPhong()` để minh họa tính tiền khi gọi `phong.tinhGia()`.
 5. Mở một phương thức `docFile`/`ghiFile` để giải thích dữ liệu text được
    chuyển từ dòng ký tự thành đối tượng và ngược lại.
 6. Có thể dùng tài khoản mẫu để trình diễn lần lượt đặt phòng, lập hóa đơn và

@@ -1,0 +1,2 @@
+KH1|hiungoo|2005|nam|0987654321|j|0|Thuong
+KH2|hiuele|2005|nam|0987654322|1|0|Thuong

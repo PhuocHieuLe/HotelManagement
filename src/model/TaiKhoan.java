@@ -14,7 +14,7 @@ public class TaiKhoan implements IXacThuc {
     public TaiKhoan() {
         tenDangNhap = "";
         matKhau = "";
-        vaiTro = "KHACH";
+        vaiTro = "LETAN";
         maNguoiDung = "";
         dangHoatDong = true;
     }

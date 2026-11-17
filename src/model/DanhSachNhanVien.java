@@ -123,16 +123,11 @@ public class DanhSachNhanVien implements IFileIO {
                 return new LeTan(ma, ten, nam, gt, dienThoai, diaChi,
                         luong, ngay, Double.parseDouble(p[9]));
             }
-            if (loai.equals("KETOAN")) {
-                return new KeToan(ma, ten, nam, gt, dienThoai, diaChi,
+            if (loai.equals("QUANLY")) {
+                return new QuanLy(ma, ten, nam, gt, dienThoai, diaChi,
                         luong, ngay, Double.parseDouble(p[9]));
             }
-            if (loai.equals("BUONGPHONG")) {
-                return new BuongPhong(ma, ten, nam, gt, dienThoai, diaChi,
-                        luong, ngay, Integer.parseInt(p[9]));
-            }
-            return new QuanLy(ma, ten, nam, gt, dienThoai, diaChi,
-                    luong, ngay, Double.parseDouble(p[9]));
+            return null;
         } catch (Exception e) {
             return null;
         }
@@ -151,11 +146,7 @@ public class DanhSachNhanVien implements IFileIO {
                         + n.getLuongCoBan() + "|" + n.getNgayVaoLam() + "|";
                 if (n instanceof LeTan) {
                     dong += ((LeTan) n).getPhuCap();
-                } else if (n instanceof KeToan) {
-                    dong += ((KeToan) n).getThuong();
-                } else if (n instanceof BuongPhong) {
-                    dong += ((BuongPhong) n).getSoPhongPhuTrach();
-                } else {
+                } else if (n instanceof QuanLy) {
                     dong += ((QuanLy) n).getHeSoChucVu();
                 }
                 pw.println(dong);
